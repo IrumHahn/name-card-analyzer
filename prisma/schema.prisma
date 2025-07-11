@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BusinessCard {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  
+  // 명함 이미지
+  imagePath String
+  
+  // 추출된 정보
+  companyName String?
+  name        String?
+  email       String?
+  phone       String?
+  address     String?
+  
+  // 추가 정보
+  notes       String?   // 만났던 내용, 특징 등
+  
+  // 문자 발송 기록
+  messageHistory MessageHistory[]
+  
+  @@map("business_cards")
+}
+
+model MessageTemplate {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  
+  name    String
+  content String
+  
+  // 문자 발송 기록
+  messageHistory MessageHistory[]
+  
+  @@map("message_templates")
+}
+
+model MessageHistory {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  
+  businessCardId String
+  businessCard   BusinessCard @relation(fields: [businessCardId], references: [id], onDelete: Cascade)
+  
+  templateId String?
+  template   MessageTemplate? @relation(fields: [templateId], references: [id])
+  
+  message String
+  status  String // 'sent', 'failed', 'pending'
+  
+  @@map("message_history")
+}
+
+model UserProfile {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  
+  // 내 정보
+  name        String?
+  companyName String?
+  email       String?
+  phone       String?
+  address     String?
+  title       String?  // 직책
+  
+  @@map("user_profile")
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  
+  // 자동 발송 설정
+  autoSendEnabled      Boolean @default(false)
+  autoSendTemplateId   String?
+  
+  // 기본 발신 번호
+  defaultSenderPhone   String?
+  
+  @@map("settings")
+}

@@ -1,0 +1,14 @@
+{
+  "buildCommand": "prisma generate && next build",
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "SOLAPI_API_KEY": "@solapi-api-key",
+    "SOLAPI_API_SECRET": "@solapi-api-secret",
+    "OPENAI_API_KEY": "@openai-api-key"
+  },
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  }
+} 
