@@ -1,13 +1,5 @@
 {
   "buildCommand": "prisma generate && next build",
-  "env": {
-    "DATABASE_URL": "postgresql://postgres:ODRMTCSgawosWsY1@db.nlxcjrzndntbjxmmscau.supabase.co:5432/postgres
-",
-    "SOLAPI_API_KEY": "NCSTGP5MZDC8JK1V",
-    "SOLAPI_API_SECRET": "P9D3X5RKXGW8YTBSIRQ9ADKUGUNYBQPL",
-    "OPENAI_API_KEY": "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
-"
-  },
   "functions": {
     "src/app/api/**/*.ts": {
       "maxDuration": 30
